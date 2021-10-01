@@ -1,6 +1,6 @@
 # Group 11: Tianyu Bao, ID:s2140490
 #           Aobo Sun, ID:s2164956
-#           xxx
+#           Honghao Ruan, ID:s2140412 
             
 
 setwd("C:\\Users\\ASUS\\Documents\\Stastical programming\\SP-Practical-1-A-Markov-Text-Model")
@@ -21,12 +21,9 @@ split_punct <- function(x,y){
   return(xs)
 }
 
-split_punct(a,",")
-
 #Q5
 punc <- c(',','.',';','!',':','?')
 for (y in punc) a <- split_punct(a,y)
-a
 
 #Q6
 ta <- tolower(a) #
@@ -47,4 +44,30 @@ b<-c()
 for (i in b_list) {
   b<-c(b,u[i])
 }
-b
+
+# Q7
+d <- match(ta,b)
+d2 <- cbind(d[1:(length(d)-1)],d[2:length(d)])
+s <- rowSums(d2)
+ii <- which(is.na(s))
+d2 <- d2[-ii,1:2]
+A <- matrix(0,length(b),length(b))
+for (y in 1:dim(d2)[1]){
+  i <- d2[y,1]
+  j <- d2[y,2]
+  A[i,j] <- A[i,j]+1
+}
+rs_A <- rowSums(A)
+Rs_A <- matrix(rep(rs_A,length(rs_A)),length(rs_A),length(rs_A))
+A_sd <- A/Rs_A
+
+#Q8
+L<-length(b)
+s_w <- sample(1:L,1)
+s<- c()
+for (i in 1:50) {
+  w <- sample(1:L,1,replace = TRUE,prob = A[s_w,])
+  s <- c(s,b[w])
+}
+
+s<- cat(s,sep=" ")
