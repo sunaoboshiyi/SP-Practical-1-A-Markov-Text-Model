@@ -1,0 +1,18 @@
+a <- scan("1581-0.txt",what="character",skip=156)
+n <- length(a)
+a <- a[-((n-2909):n)] ## strip license
+
+a <- strsplit(a," ")
+
+split_punct <- function(x,y){
+  i_pc <- grep(y,x,fixed = TRUE)
+  x_new <- gsub(y,'',x,fixed = TRUE)
+  xs <- rep('',length(i_pc)+length(x))
+  ii <- i_pc+1:length(i_pc)
+  xs[ii] <- rep(y,length(i_pc))
+  xs[-ii] <- x_new
+  return(xs)
+}
+
+punc <- c(',','.',';','!',':','?')
+for (y in punc) a <- split_punct(a,y)
